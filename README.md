@@ -1,5 +1,37 @@
 [Uploading Patient-Records-System.pptx…]()
 [Uploading patient record system.html…]()
+# Patient Records System
+
+A responsive, single-page hospital management demo built with HTML, CSS, and JavaScript. It provides a simple interface for viewing sample patient records, appointments, staff, medical history, and reports.
+
+## Features
+
+- Demo login with Admin, Doctor, and Receptionist role options
+- Dashboard with patient and appointment summary cards
+- Patient list with search by ID, name, or phone
+- Patient registration form
+- Patient profile with contact and medical information
+- Sample medical history and visit timeline
+- Appointment list with status updates
+- Doctors and staff directory
+- Sample reports with monthly visit and diagnosis summaries
+- Responsive layout for desktop and mobile screens
+
+## Run locally
+
+1. Download or clone this repository.
+2. Open `patient record system.html` in a web browser.
+3. Use the demo credentials shown on the login screen.
+
+## Demo data and limitations
+
+This project uses sample data stored in the HTML file. It does not connect to a database or provide real authentication, persistent storage, or production-grade security. Do not enter real patient information.
+
+## Built with
+
+- HTML
+- CSS
+- Vanilla JavaScript
 <!DOCTYPE html>
 <html lang="en">
 <head>
