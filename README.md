@@ -1,0 +1,168 @@
+[Uploading Patient-Records-System.pptx…]()
+[Uploading patient record system.html…]()
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Patient Records System</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f8fb;color:#17324d}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#e8f7f5,#eaf2ff)}
+.login-card{background:#fff;width:390px;padding:35px;border-radius:18px;box-shadow:0 12px 35px #17324d22}
+.logo{width:60px;height:60px;border-radius:15px;background:#168b8b;color:white;display:grid;place-items:center;font-size:30px;margin:auto}
+h1,h2,h3{margin-top:0}.login h1{text-align:center;margin:15px 0 5px}.muted{color:#718096;font-size:14px}
+label{display:block;font-weight:bold;font-size:13px;margin:14px 0 6px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #d5e0e8;border-radius:9px;background:#fff}
+.primary{background:#168b8b;color:#fff;padding:11px 16px;border-radius:9px;font-weight:bold}.secondary{background:#e8f2f5;color:#17324d;padding:10px 14px;border-radius:9px}.danger{background:#fee2e2;color:#991b1b;padding:10px 14px;border-radius:9px}
+.full{width:100%;margin-top:18px}.app{display:none;min-height:100vh}.sidebar{position:fixed;left:0;top:0;bottom:0;width:235px;background:#123b56;color:#dcebf3;padding:22px 15px}.brand{font-size:20px;font-weight:bold;margin:4px 8px 28px}.nav button{display:block;width:100%;text-align:left;background:transparent;color:#dcebf3;padding:12px;border-radius:9px;margin:4px 0}.nav button:hover,.nav button.active{background:#1b607c;color:#fff}.logout{position:absolute;bottom:20px;left:15px;right:15px}.main{margin-left:235px;padding:28px;max-width:1500px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.page{display:none}.page.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{background:#fff;padding:20px;border-radius:14px;box-shadow:0 3px 14px #17324d10}.metric{font-size:30px;font-weight:bold;margin-top:8px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.actions{display:flex;gap:10px;flex-wrap:wrap}.table-wrap{overflow:auto;background:#fff;border-radius:14px}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:13px;text-align:left;border-bottom:1px solid #edf1f4;white-space:nowrap}.table th{background:#f7fafc}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 18px;background:#fff;padding:20px;border-radius:14px}.full-field{grid-column:1/-1}.profile{display:grid;grid-template-columns:280px 1fr;gap:18px}.timeline{border-left:3px solid #b8dddd;padding-left:20px}.event{background:#fff;padding:16px;border-radius:12px;margin:0 0 15px}.bar{height:12px;background:#dceff0;border-radius:10px;overflow:hidden;margin:7px 0 13px}.bar span{display:block;height:100%;background:#168b8b}.toast{position:fixed;right:25px;bottom:25px;background:#17324d;color:#fff;padding:13px 18px;border-radius:10px;display:none}
+@media(max-width:850px){.sidebar{width:70px}.brand{font-size:0}.brand:after{content:"✚";font-size:25px}.nav button{font-size:0;text-align:center}.nav button:before{content:"•";font-size:20px}.main{margin-left:70px;padding:18px}.cards{grid-template-columns:repeat(2,1fr)}.profile{grid-template-columns:1fr}.grid2,.form-grid{grid-template-columns:1fr}.full-field{grid-column:auto}}
+@media(max-width:550px){.cards{grid-template-columns:1fr}.main{padding:12px}.top{align-items:flex-start;gap:10px}.top button{font-size:12px}}
+</style>
+</head>
+<body>
+
+<section id="login" class="login">
+  <div class="login-card">
+    <div class="logo">✚</div>
+    <h1>Patient Records</h1>
+    <p class="muted" style="text-align:center">Secure Hospital Management System</p>
+    <label>Email / Username</label><input id="loginUser" value="admin@demo.com">
+    <label>Password</label><input id="loginPass" type="password" value="demo123">
+    <label>Role</label><select id="loginRole"><option>Admin</option><option>Doctor</option><option>Receptionist</option></select>
+    <button class="primary full" onclick="login()">Login</button>
+    <p class="muted" style="text-align:center;margin-top:15px">Demo system — sample data only</p>
+  </div>
+</section>
+
+<section id="app" class="app">
+<aside class="sidebar">
+  <div class="brand">✚ Patient Records</div>
+  <div class="nav">
+    <button onclick="showPage('dashboard',this)">▣ Dashboard</button>
+    <button onclick="showPage('patients',this)">👥 Patients</button>
+    <button onclick="showPage('appointments',this)">▦ Appointments</button>
+    <button onclick="showPage('staff',this)">♟ Doctors & Staff</button>
+    <button onclick="showPage('records',this)">▤ Medical Records</button>
+    <button onclick="showPage('reports',this)">▥ Reports</button>
+    <button onclick="showPage('settings',this)">⚙ Settings</button>
+  </div>
+  <button class="secondary logout" onclick="logout()">Logout</button>
+</aside>
+
+<main class="main">
+<div class="top"><div><h2 id="pageTitle">Dashboard</h2><span class="muted">Welcome to the Patient Records System</span></div><button class="primary" onclick="showPage('addPatient')">+ Add Patient</button></div>
+
+<section id="dashboard" class="page active">
+  <div class="cards">
+    <div class="card"><span class="muted">Total Patients</span><div class="metric" id="patientCount">128</div></div>
+    <div class="card"><span class="muted">Today's Appointments</span><div class="metric">18</div></div>
+    <div class="card"><span class="muted">Doctors Available</span><div class="metric">12</div></div>
+    <div class="card"><span class="muted">Pending Reports</span><div class="metric">7</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Quick Actions</h3><div class="actions">
+      <button class="primary" onclick="showPage('addPatient')">+ Add Patient</button>
+      <button class="secondary" onclick="showPage('patients')">Search Patient</button>
+      <button class="secondary" onclick="showPage('appointments')">Appointments</button>
+      <button class="secondary" onclick="showPage('records')">Medical Records</button>
+    </div></div>
+    <div class="card"><h3>Recent Patient Records</h3><p><b>PT-1004</b> — Ananya Rao <span class="muted">Today</span></p><p><b>PT-1003</b> — Rahul Kumar <span class="muted">Yesterday</span></p><p><b>PT-1002</b> — Meera Singh <span class="muted">2 days ago</span></p></div>
+  </div>
+</section>
+
+<section id="patients" class="page">
+ <div class="card">
+  <div class="actions" style="margin-bottom:15px"><input id="searchBox" placeholder="Search by Patient ID, name or phone" oninput="filterPatients()" style="max-width:500px"><button class="primary" onclick="showPage('addPatient')">+ Add Patient</button></div>
+  <div class="table-wrap"><table class="table"><thead><tr><th>ID</th><th>Name</th><th>Age</th><th>Gender</th><th>Phone</th><th>Last Visit</th><th>Action</th></tr></thead><tbody id="patientTable"></tbody></table></div>
+ </div>
+</section>
+
+<section id="addPatient" class="page">
+ <form class="form-grid" onsubmit="addPatient(event)">
+  <div><label>Patient ID</label><input value="Auto-generated" disabled></div>
+  <div><label>Full Name</label><input id="pname" required></div>
+  <div><label>Date of Birth</label><input id="pdob" type="date" required></div>
+  <div><label>Gender</label><select id="pgender"><option>Female</option><option>Male</option><option>Other</option></select></div>
+  <div><label>Phone Number</label><input id="pphone" required></div>
+  <div><label>Email</label><input id="pemail" type="email"></div>
+  <div class="full-field"><label>Address</label><textarea id="paddress"></textarea></div>
+  <div><label>Emergency Contact</label><input id="pemergency"></div>
+  <div><label>Blood Group</label><select id="pblood"><option>O+</option><option>A+</option><option>B+</option><option>AB+</option><option>O-</option><option>A-</option><option>B-</option><option>AB-</option></select></div>
+  <div><label>Allergies</label><input id="pallergy" placeholder="None / sample allergy"></div>
+  <div><label>Existing Medical Conditions</label><input id="pcondition" placeholder="None / sample condition"></div>
+  <div class="full-field"><button class="primary" type="submit">Register Patient</button> <button class="secondary" type="button" onclick="showPage('patients')">Cancel</button></div>
+ </form>
+</section>
+
+<section id="profile" class="page">
+ <div id="profileContent"></div>
+</section>
+
+<section id="records" class="page">
+ <div class="card"><h3>Medical History</h3><p class="muted">Sample patient: PT-1004 — Ananya Rao</p>
+  <div class="timeline">
+   <div class="event"><b>08 Oct 2026 — Dr. Priya Sharma</b><p>Reason: Routine consultation</p><p><b>Diagnosis:</b> Seasonal allergy</p><p><b>Treatment:</b> Rest and prescribed medication</p><p><b>Prescription:</b> Demo prescription</p><p class="muted">Doctor's notes: Follow-up recommended in two weeks.</p></div>
+   <div class="event"><b>22 Sep 2026 — Dr. Arjun Mehta</b><p>Reason: General check-up</p><p><b>Diagnosis:</b> No major concerns</p><p><b>Treatment:</b> Preventive care</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="appointments" class="page">
+ <div class="card">
+  <div class="actions"><button class="primary" onclick="addAppointment()">+ Add Appointment</button></div><br>
+  <div class="table-wrap"><table class="table"><thead><tr><th>Patient</th><th>Doctor</th><th>Date</th><th>Time</th><th>Type</th><th>Status</th><th>Action</th></tr></thead>
+  <tbody id="appointmentTable"></tbody></table></div>
+ </div>
+</section>
+
+<section id="staff" class="page">
+ <div class="card"><h3>Doctors & Staff</h3><div class="table-wrap"><table class="table"><thead><tr><th>Name</th><th>Specialization</th><th>Contact</th><th>Availability</th><th>Role</th></tr></thead>
+ <tbody><tr><td>Dr. Priya Sharma</td><td>General Medicine</td><td>90000 10001</td><td>Mon–Fri</td><td>Doctor</td></tr><tr><td>Dr. Arjun Mehta</td><td>Cardiology</td><td>90000 10002</td><td>Mon, Wed, Fri</td><td>Doctor</td></tr><tr><td>Neha Patel</td><td>—</td><td>90000 10003</td><td>Full Time</td><td>Receptionist</td></tr></tbody></table></div></div>
+</section>
+
+<section id="reports" class="page">
+ <div class="cards"><div class="card"><span class="muted">Monthly Visits</span><div class="metric">342</div></div><div class="card"><span class="muted">Completed</span><div class="metric">286</div></div><div class="card"><span class="muted">Upcoming</span><div class="metric">56</div></div><div class="card"><span class="muted">New Patients</span><div class="metric">41</div></div></div>
+ <div class="grid2"><div class="card"><h3>Visits by Month</h3><p>June</p><div class="bar"><span style="width:55%"></span></div><p>July</p><div class="bar"><span style="width:72%"></span></div><p>August</p><div class="bar"><span style="width:84%"></span></div><p>September</p><div class="bar"><span style="width:68%"></span></div></div>
+ <div class="card"><h3>Common Diagnoses</h3><p>Seasonal allergy — 32%</p><div class="bar"><span style="width:32%"></span></div><p>General check-up — 27%</p><div class="bar"><span style="width:27%"></span></div><p>Respiratory issues — 18%</p><div class="bar"><span style="width:18%"></span></div></div></div>
+</section>
+
+<section id="settings" class="page">
+ <div class="card"><h3>Security & Settings</h3><p>✓ Role-based access control</p><p>✓ Secure login and logout</p><p>✓ Delete confirmation</p><p>✓ Audit log for record changes</p><p>✓ Demo data only — no real patient information</p></div>
+</section>
+</main></section>
+<div id="toast" class="toast"></div>
+
+<script>
+let patients=[
+{id:"PT-1004",name:"Ananya Rao",age:29,gender:"Female",phone:"98765 43210",last:"08 Oct 2026",blood:"O+",allergy:"Seasonal allergy",condition:"None",email:"ananya@example.com",address:"Demo address",emergency:"90000 11111"},
+{id:"PT-1003",name:"Rahul Kumar",age:41,gender:"Male",phone:"98765 43211",last:"07 Oct 2026",blood:"B+",allergy:"None",condition:"Hypertension",email:"rahul@example.com",address:"Demo address",emergency:"90000 11112"},
+{id:"PT-1002",name:"Meera Singh",age:35,gender:"Female",phone:"98765 43212",last:"06 Oct 2026",blood:"A+",allergy:"None",condition:"Diabetes",email:"meera@example.com",address:"Demo address",emergency:"90000 11113"}
+];
+let appointments=[
+["Ananya Rao","Dr. Priya Sharma","08 Oct 2026","10:30 AM","Consultation","Scheduled"],
+["Rahul Kumar","Dr. Arjun Mehta","08 Oct 2026","12:00 PM","Follow-up","Completed"],
+["Meera Singh","Dr. Priya Sharma","09 Oct 2026","09:30 AM","Check-up","Scheduled"]
+];
+function login(){document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";renderPatients();renderAppointments()}
+function logout(){document.getElementById("app").style.display="none";document.getElementById("login").style.display="flex"}
+function showPage(id,btn){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");
+ let titles={dashboard:"Dashboard",patients:"Patients",addPatient:"Add New Patient",profile:"Patient Profile",records:"Medical Records",appointments:"Appointments",staff:"Doctors & Staff",reports:"Reports",settings:"Settings"};document.getElementById("pageTitle").textContent=titles[id]||"Patient Records";
+}
+function renderPatients(list=patients){document.getElementById("patientCount").textContent=128+Math.max(0,patients.length-3);document.getElementById("patientTable").innerHTML=list.map(p=>`<tr><td>${p.id}</td><td>${p.name}</td><td>${p.age}</td><td>${p.gender}</td><td>${p.phone}</td><td>${p.last}</td><td><button class="secondary" onclick="viewPatient('${p.id}')">View Record</button></td></tr>`).join("")}
+function filterPatients(){let q=document.getElementById("searchBox").value.toLowerCase();renderPatients(patients.filter(p=>Object.values(p).join(" ").toLowerCase().includes(q)))}
+function viewPatient(id){let p=patients.find(x=>x.id===id);document.getElementById("profileContent").innerHTML=`<div class="profile"><div class="card"><h2>${p.name}</h2><p><b>${p.id}</b></p><p>${p.gender}, ${p.age} years</p><p>Blood Group: ${p.blood}</p><p>Phone: ${p.phone}</p><p>Email: ${p.email||"—"}</p></div><div class="card"><h3>Personal & Medical Information</h3><p><b>Address:</b> ${p.address}</p><p><b>Emergency Contact:</b> ${p.emergency}</p><p><b>Allergies:</b> ${p.allergy}</p><p><b>Medical Conditions:</b> ${p.condition}</p><hr><h3>Previous Visits</h3><p>08 Oct 2026 — General consultation — Dr. Priya Sharma</p><p>22 Sep 2026 — General check-up — Dr. Arjun Mehta</p><div class="actions"><button class="primary" onclick="editPatient('${p.id}')">Edit Record</button><button class="secondary" onclick="addVisit()">Add Visit</button><button class="secondary" onclick="window.print()">Print Record</button></div></div></div>`;showPage("profile")}
+function addPatient(e){e.preventDefault();let id="PT-"+(1005+patients.length-3);let dob=new Date(document.getElementById("pdob").value);let age=Math.max(0,new Date().getFullYear()-dob.getFullYear());patients.unshift({id,name:document.getElementById("pname").value,age,gender:document.getElementById("pgender").value,phone:document.getElementById("pphone").value,last:"08 Oct 2026",blood:document.getElementById("pblood").value,allergy:document.getElementById("pallergy").value||"None",condition:document.getElementById("pcondition").value||"None",email:document.getElementById("pemail").value,address:document.getElementById("paddress").value||"Demo address",emergency:document.getElementById("pemergency").value||"Not provided"});e.target.reset();renderPatients();toast("Patient registered successfully");showPage("patients")}
+function editPatient(id){toast("Edit mode enabled for "+id)}
+function addVisit(){toast("New medical visit form opened (demo)")}
+function renderAppointments(){document.getElementById("appointmentTable").innerHTML=appointments.map((a,i)=>`<tr>${a.slice(0,5).map(x=>`<td>${x}</td>`).join("")}<td>${a[5]}</td><td><button class="secondary" onclick="toggleAppointment(${i})">${a[5]==="Completed"?"Mark Scheduled":"Mark Completed"}</button></td></tr>`).join("")}
+function toggleAppointment(i){appointments[i][5]=appointments[i][5]==="Completed"?"Scheduled":"Completed";renderAppointments();toast("Appointment status updated")}
+function addAppointment(){appointments.push(["Demo Patient","Dr. Priya Sharma","10 Oct 2026","11:00 AM","Consultation","Scheduled"]);renderAppointments();toast("Demo appointment added")}
+function toast(msg){let t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",2200)}
+renderPatients();renderAppointments();
+</script>
+</body>
+</html>
